@@ -195,6 +195,14 @@ class PythonAdventurerGame(QMainWindow):
         self.teaching_button.clicked.connect(self.show_teaching)
         self.level_layout.addWidget(self.teaching_button)
 
+        self.answer_button = QPushButton("显示答案")
+        self.answer_button.clicked.connect(self.show_answer)
+        self.level_layout.addWidget(self.answer_button)
+
+        self.hint_button = QPushButton("显示提示")
+        self.hint_button.clicked.connect(self.show_hint)
+        self.level_layout.addWidget(self.hint_button)
+
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("输入名字")
         self.level_layout.addWidget(self.name_input)
@@ -345,6 +353,18 @@ class PythonAdventurerGame(QMainWindow):
         teaching_message = level.teaching()
         self.console_log.appendPlainText(teaching_message)
         QMessageBox.information(self, "教学", teaching_message)
+
+    def show_answer(self):
+        level = self.levels[self.current_level]
+        answer_message = level.answer()
+        self.console_log.appendPlainText(answer_message)
+        QMessageBox.information(self, "答案", answer_message)
+    
+    def show_hint(self):
+        level = self.levels[self.current_level]
+        hint_message = level.hint()
+        self.console_log.appendPlainText(hint_message)
+        QMessageBox.information(self, "提示", hint_message)
 
     def run_code(self):
         self.user_code = self.code_text_edit.toPlainText()

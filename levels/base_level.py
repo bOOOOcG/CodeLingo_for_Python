@@ -10,3 +10,9 @@ class BaseLevel:
 
     def teaching(self):
         raise NotImplementedError("每个关卡必须提供教学内容。")
+
+    def answer(self):
+        raise NotImplementedError("每个关卡必须提供答案。")
+
+    def hint(self):
+        raise NotImplementedError("每个关卡必须提供提示。")
