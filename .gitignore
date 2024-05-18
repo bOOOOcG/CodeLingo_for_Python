@@ -1,0 +1,13 @@
+# 忽略文件
+*.pyc
+*.log
+
+# 忽略目录
+
+dist/
+
+build/
+
+bak/
+
+tj.py
