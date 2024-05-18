@@ -1,10 +1,8 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QLineEdit, QMessageBox, QGridLayout, QPlainTextEdit
-from levels.level1 import Level1
-from levels.level2 import Level2
-from levels.level3 import Level3
-from levels.level4 import Level4
-from levels.level5 import Level5
-from levels.boss1 import Boss1
+from PySide6.QtWidgets import (
+    QMainWindow, QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, 
+    QLineEdit, QMessageBox, QGridLayout, QPlainTextEdit
+)
+from levels import Level1, Level2, Level3, Level4, Level5, Boss1
 from module.config_manager import ConfigManager
 from save_manager import SaveManager
 from menu import MainMenu
@@ -61,7 +59,10 @@ class PythonAdventurerGame(QMainWindow):
         self.console_log.setVisible(self.config_manager.get_setting("show_console_log", False))
         self.level_layout.addWidget(self.console_log)
 
-        self.levels = [Level1(self), Level2(self), Level3(self), Level4(self), Level5(self), Boss1(self)]
+        # 优化关卡加载部分
+        level_classes = [Level1, Level2, Level3, Level4, Level5, Boss1]
+        self.levels = [cls(self) for cls in level_classes]
+        
         self.current_level = 0
         self.start_time = None
 
