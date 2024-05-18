@@ -45,6 +45,20 @@ class Level5(BaseLevel):
 
     def teaching(self):
         return ("函数用于将一段代码封装成一个可重复使用的代码块。使用 def 关键字来定义函数。例如：\n"
-                "def greet(name, age, height):\n"
+                "def 函数名(参数1, 参数2, ...):\n"
+                "    # 函数体\n"
+                "函数体内的代码块会在调用函数时执行。")
+
+    def answer(self):
+        return ("def greet(name, age, height):\n"
                 "    print(f'你好, {name}！你今年 {age} 岁，身高 {height} 米。')\n"
-                "这段代码定义了一个名为 greet 的函数，它接收三个参数：名字、年龄和身高，并打印出'你好, name！你今年 age 岁，身高 height 米。'。")
+                "\n"
+                "greet('测试', 30, 1.75)")
+
+    def hint(self):
+        return ("提示：定义一个接收三个参数的函数，并使用 print 函数输出格式化的字符串。\n"
+                "例如，使用 f-string 格式化字符串：\n"
+                "print(f'你好, {name}！你今年 {age} 岁，身高 {height} 米。')")
+
+    def run_all_tests(self, user_code):
+        return self.check_code(user_code)

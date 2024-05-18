@@ -93,12 +93,20 @@ class Level10(BaseLevel):
 
     def teaching(self):
         return ("在这个关卡中，你需要学习如何操作文件。你需要定义一个函数，并在函数内使用文件操作方法。\n"
-                "示例：\n"
-                "def file_operations(filename):\n"
+                "例如，使用 open() 函数打开文件，使用 read() 方法读取文件内容，"
+                "使用 readlines() 方法按行读取文件内容，并使用循环遍历每一行。")
+
+    def answer(self):
+        return ("def file_operations(filename):\n"
                 "    with open(filename, 'r') as file:\n"
                 "        content = file.read()\n"
                 "        print(content)\n"
                 "        file.seek(0)\n"
                 "        lines = file.readlines()\n"
                 "        for line in lines:\n"
-                "            print(len(line))\n")
+                "            print(len(line.strip()))")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收文件名参数的函数，并在函数内使用文件操作的方法。\n"
+                "例如，使用 open() 函数打开文件，使用 read() 方法读取文件内容，"
+                "使用 readlines() 方法按行读取文件内容，并使用循环遍历每一行。")

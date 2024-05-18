@@ -48,14 +48,29 @@ class Level3(BaseLevel):
 
     def teaching(self):
         return ("条件语句用于根据条件的真或假来执行不同的代码块。使用 if 关键字来编写条件语句。例如：\n"
-                "age = 20\n"
+                "if 条件:\n"
+                "    # 当条件为真时执行的代码\n"
+                "else:\n"
+                "    # 当条件为假时执行的代码\n"
+                "条件语句允许程序根据不同的输入执行不同的操作，是编程中的重要组成部分。")
+
+    def answer(self):
+        return ("age = 20\n"
                 "if age > 18:\n"
                 "    print('成年人')\n"
                 "else:\n"
                 "    print('未成年人')\n"
+                "\n"
                 "height = 1.75\n"
                 "if height > 1.70:\n"
                 "    print('你很高')\n"
                 "else:\n"
-                "    print('你不高')\n"
-                "这段代码会检查 age 是否大于 18，并打印相应的结果，同时检查 height 是否大于 1.70 并打印相应的结果。")
+                "    print('你不高')")
+
+    def hint(self):
+        return ("提示：使用 if 语句来检查 age 和 height 的值。\n"
+                "记得使用 if 语句和 else 语句来处理不同的情况。")
+
+    def run_all_tests(self, user_code):
+        # 运行所有测试用例的逻辑
+        return self.check_code(user_code)

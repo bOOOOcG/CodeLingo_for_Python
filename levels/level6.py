@@ -95,9 +95,26 @@ class Level6(BaseLevel):
         return ("在这个关卡中，你需要学习如何操作列表。你需要定义一个函数，并在函数内使用循环和列表操作。\n"
                 "示例：\n"
                 "def list_operations(numbers):\n"
+                "    列表的长度 = len(numbers)\n"
+                "    打印 列表的长度\n"
+                "    打印 列表的第一个元素\n"
+                "    打印 列表的最后一个元素\n"
+                "    for 循环变量 in 列表:\n"
+                "        if 循环变量 % 2 == 0:\n"
+                "            打印 循环变量\n")
+
+    def answer(self):
+        return ("def list_operations(numbers):\n"
                 "    print(len(numbers))\n"
                 "    print(numbers[0])\n"
                 "    print(numbers[-1])\n"
                 "    for num in numbers:\n"
                 "        if num % 2 == 0:\n"
-                "            print(num)\n")
+                "            print(num)")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收列表参数的函数，并在函数内使用 for 循环遍历列表。\n"
+                "使用 len() 函数获取列表的长度。\n"
+                "使用索引访问列表的第一个和最后一个元素。\n"
+                "使用 if 语句检查一个数是否为偶数。")
+

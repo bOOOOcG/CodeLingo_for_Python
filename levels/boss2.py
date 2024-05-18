@@ -102,8 +102,13 @@ class Boss2(BaseLevel):
 
     def teaching(self):
         return ("在这个关卡中，你需要综合运用前面所学的所有知识。你需要定义一个函数，并在函数内使用条件语句、字典和列表操作以及文件操作。\n"
-                "示例：\n"
-                "def comprehensive_adventure(name, age, info, data, filename):\n"
+                "首先，使用 if 语句根据年龄打印不同的信息。\n"
+                "其次，使用字典方法获取键为 city 的值。\n"
+                "然后，使用 for 循环遍历列表，打印每个人的名字。\n"
+                "最后，使用文件操作方法读取并打印文件内容。")
+
+    def answer(self):
+        return ("def comprehensive_adventure(name, age, info, data, filename):\n"
                 "    if age > 18:\n"
                 "        print(f'欢迎，{name}，您是一名成年人。')\n"
                 "    else:\n"
@@ -112,4 +117,11 @@ class Boss2(BaseLevel):
                 "    for person in data:\n"
                 "        print(person['name'])\n"
                 "    with open(filename, 'r') as file:\n"
-                "        print(file.read())\n")
+                "        print(file.read().strip())")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收名字、年龄、字典、列表和文件名参数的函数。\n"
+                "在函数内使用 if 语句判断年龄并打印相应的信息。\n"
+                "使用字典方法获取并打印 city 的值。\n"
+                "使用 for 循环遍历 data 列表并打印每个人的名字。\n"
+                "使用 open() 函数打开文件并读取内容，然后打印出来。")

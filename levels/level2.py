@@ -37,11 +37,17 @@ class Level2(BaseLevel):
             return False, "代码错误：变量 'height' 应该是浮点数类型。"
 
         # 检查输出
-        printed_output = output.getvalue().strip()
-        if all(val in printed_output for val in [local_namespace['name'], str(local_namespace['age']), str(local_namespace['height'])]):
+        printed_output = output.getvalue().strip().split('\n')
+        expected_output = [
+            f"你好, {local_namespace['name']}！",
+            str(local_namespace['age']),
+            str(local_namespace['height'])
+        ]
+        
+        if all(line in printed_output for line in expected_output):
             return True, "代码正确！"
         else:
-            return False, f"代码错误：输出应包含 'name'、'age' 和 'height'。当前输出: {printed_output}"
+            return False, f"代码错误：输出应包含 'name'、'age' 和 'height'。当前输出: {output.getvalue().strip()}"
 
     def teaching(self):
         return ("在 Python 中，变量用于存储数据。可以使用等号 '=' 来赋值。例如：\n"
@@ -49,8 +55,22 @@ class Level2(BaseLevel):
                 "age = 25\n"
                 "height = 1.70\n"
                 "这会将字符串 'Alice' 赋值给变量 name，将整数 25 赋值给变量 age，将浮点数 1.70 赋值给变量 height。\n"
-                "然后可以使用 `print` 函数来打印变量的值，例如：\n"
-                "print(f'你好, {name}！')\n"
-                "print(f'年龄: {age}')\n"
-                "print(f'身高: {height}')\n"
+                "然后可以使用 `print` 函数来打印变量的值\n"
                 "在这个任务中，你需要定义变量 `name`、`age` 和 `height`，并分别打印它们的值。")
+
+    def answer(self):
+        return ("name = '你的名字'\n"
+                "age = 你的年龄\n"
+                "height = 你的身高\n"
+                "print(f'你好, {name}！')\n"
+                "print(age)\n"
+                "print(height)")
+
+    def hint(self):
+        return ("提示：首先定义变量 name、age 和 height。\n"
+                "然后使用 print 函数打印这些变量的值。\n"
+                "例如：print(f'你好, {name}！') 用于打印变量 name 的值。")
+
+    def run_all_tests(self, user_code):
+        # 运行所有测试用例的逻辑
+        return self.check_code(user_code)

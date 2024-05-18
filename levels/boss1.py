@@ -6,10 +6,10 @@ import contextlib
 class Boss1(BaseLevel):
     def description(self):
         return ("Boss关1：综合应用\n"
-                "任务：定义一个函数 adventure(name, age)，该函数接收两个参数：名字和年龄。\n"
+                "任务：定义一个函数 adventure(name, age, height)，该函数接收三个参数：名字、年龄和身高。\n"
                 "如果年龄大于18，打印“欢迎，name，您是一名成年人。”，否则打印“欢迎，name，您是一名未成年人。”。\n"
                 "接着，使用 for 循环打印从 1 到 age 之间的所有数字。\n"
-                "此外，定义一个变量 height 并将其值设为一个浮点数，然后在函数中检查 height 是否大于 1.70，"
+                "然后在函数中检查 height 是否大于 1.70，"
                 "如果是则打印 '你很高'，否则打印 '你不高'。")
 
     def check_code(self, code):
@@ -104,9 +104,12 @@ class Boss1(BaseLevel):
         return True, "所有测试用例通过！"
 
     def teaching(self):
-        return ("在这个关卡中，你需要综合运用前面所学的所有知识。你需要定义一个函数，并在函数内使用条件语句和循环。\n"
-                "示例：\n"
-                "def adventure(name, age, height):\n"
+        return ("在这个关卡中，你需要综合运用前面所学的所有知识。你需要定义一个函数 adventure，并在函数内使用条件语句和循环。\n"
+                "你可以通过 if 语句检查年龄，并使用 for 循环打印一系列数字。\n"
+                "此外，你还需要定义一个变量来检查身高，并根据条件打印相应的信息。")
+
+    def answer(self):
+        return ("def adventure(name, age, height):\n"
                 "    if age > 18:\n"
                 "        print(f'欢迎，{name}，您是一名成年人。')\n"
                 "    else:\n"
@@ -116,4 +119,9 @@ class Boss1(BaseLevel):
                 "    if height > 1.70:\n"
                 "        print('你很高')\n"
                 "    else:\n"
-                "        print('你不高')\n")
+                "        print('你不高')")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收名字、年龄和身高参数的函数，并在函数内使用条件语句和循环。\n"
+                "例如，使用 if 语句判断年龄，使用 for 循环打印从 1 到年龄的所有数字，并使用 if 语句判断身高。")
+

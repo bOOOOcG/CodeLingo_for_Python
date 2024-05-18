@@ -93,9 +93,16 @@ class Level9(BaseLevel):
 
     def teaching(self):
         return ("在这个关卡中，你需要综合运用列表和字典的操作。你需要定义一个函数，并在函数内使用循环和字典操作。\n"
-                "示例：\n"
-                "def list_dict_operations(data):\n"
+                "例如，你可以使用 for 循环遍历列表，并在循环体内使用字典的方法获取字典的值。")
+
+    def answer(self):
+        return ("def list_dict_operations(data):\n"
                 "    for person in data:\n"
                 "        print(f\"{person['name']}: {person['age']}, {person['city']}\")\n"
                 "    for person in data:\n"
-                "        print(person['name'])\n")
+                "        print(person['name'])")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收包含字典的列表参数的函数，并在函数内使用循环和字典的方法。\n"
+                "例如，使用 for 循环遍历列表，并在循环体内使用字典的方法获取字典的值。")
+

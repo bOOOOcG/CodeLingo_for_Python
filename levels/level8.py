@@ -87,11 +87,20 @@ class Level8(BaseLevel):
 
     def teaching(self):
         return ("在这个关卡中，你需要学习如何操作字符串。你需要定义一个函数，并在函数内使用字符串方法和操作。\n"
-                "示例：\n"
-                "def string_operations(text):\n"
+                "例如，使用 len() 函数获取字符串的长度，使用索引访问字符串的第一个和最后一个字符，"
+                "以及使用 split() 方法将字符串分割成单词。")
+
+    def answer(self):
+        return ("def string_operations(text):\n"
                 "    print(len(text))\n"
                 "    print(text[0])\n"
                 "    print(text[-1])\n"
                 "    words = text.split()\n"
                 "    for word in words:\n"
-                "        print(word)\n")
+                "        print(word)")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收字符串参数的函数，并在函数内使用字符串的方法。\n"
+                "例如，使用 len() 函数获取字符串的长度，使用索引访问字符串的第一个和最后一个字符，"
+                "以及使用 split() 方法将字符串分割成单词。")
+

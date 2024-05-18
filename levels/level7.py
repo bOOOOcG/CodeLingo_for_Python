@@ -84,8 +84,17 @@ class Level7(BaseLevel):
 
     def teaching(self):
         return ("在这个关卡中，你需要学习如何操作字典。你需要定义一个函数，并在函数内使用字典的方法和操作。\n"
-                "示例：\n"
-                "def dict_operations(info):\n"
+                "例如，你可以使用 .keys() 方法获取字典的所有键，使用 .values() 方法获取字典的所有值，"
+                "以及使用索引访问字典中具体键的值。")
+
+    def answer(self):
+        return ("def dict_operations(info):\n"
                 "    print(info.keys())\n"
                 "    print(info.values())\n"
-                "    print(info['name'])\n")
+                "    print(info['name'])")
+
+    def hint(self):
+        return ("提示：你需要定义一个接收字典参数的函数，并在函数内使用字典的方法。\n"
+                "例如，使用 .keys() 方法获取字典的所有键，使用 .values() 方法获取字典的所有值，"
+                "以及使用索引访问字典中具体键的值。")
+
