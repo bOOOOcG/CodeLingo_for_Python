@@ -97,6 +97,7 @@ class PythonAdventurerGame(QMainWindow):
         self.levels = [cls(self) for cls in level_classes]
 
     def show_main_menu(self):
+        self.main_menu = MainMenu(self)  # 重新创建 MainMenu 对象
         self.setCentralWidget(self.main_menu)
 
     def start_game(self):
