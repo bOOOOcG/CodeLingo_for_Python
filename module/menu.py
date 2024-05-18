@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QGridLayout
 class MainMenu(QWidget):
     def __init__(self, game):
         super().__init__()
+        
         self.game = game
         self.layout = QVBoxLayout(self)
 

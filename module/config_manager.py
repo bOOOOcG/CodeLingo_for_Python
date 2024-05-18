@@ -13,13 +13,18 @@ logger = logging.getLogger(__name__)  # 创建logger
 
 class ConfigManager:
     DEFAULT_CONFIG = {
-        "show_console_log": False
+        "General": {
+            "show_console_log": False
+        },
+        "Visual": {
+            "light_mode": False  # 新的配置项作为 Visual 的子键
+        }
     }
     CONFIG_FILE = "config.cfg"  # 配置文件的名称
     KEY = "wq_oPbG6IYY0APUmDnxw9gy5zGDtM4D9V-vcuFW0Zwo="
     fernet = Fernet(KEY)
 
-    def __init__(self, allow_plain_text=False):
+    def __init__(self, allow_plain_text=True):
         self.allow_plain_text = allow_plain_text
         self.config = self.load_config()
 
@@ -90,10 +95,18 @@ class ConfigManager:
         self.save_config()  # 保存更改
         logger.debug(f"配置项'{setting}'已更新。")
 
-    def get_setting(self, setting, default=None):
-        if self.config is None:
-            self.config = self.DEFAULT_CONFIG
-        return self.config.get(setting, default)
+    def get_setting(self, key, default=None):
+        logging.debug(f"Getting setting for key: {key}")
+        keys = key.split('.')
+        value = self.config
+        try:
+            for k in keys:
+                value = value[k]
+            logging.debug(f"Found setting for key {key}: {value}")
+            return value
+        except KeyError:
+            logging.debug(f"Setting for key {key} not found, returning default: {default}")
+            return default
 
     def create_default_config(self):
         default_config = self.DEFAULT_CONFIG.copy()  # 创建默认配置的副本
