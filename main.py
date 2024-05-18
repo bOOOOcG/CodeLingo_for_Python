@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication
-from game import PythonAdventurerGame
+from module.game import PythonAdventurerGame
 
 if __name__ == "__main__":
     app = QApplication([])

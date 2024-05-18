@@ -4,8 +4,8 @@ from PySide6.QtWidgets import (
 )
 from levels import Level1, Level2, Level3, Level4, Level5, Boss1
 from module.config_manager import ConfigManager
-from save_manager import SaveManager
-from menu import MainMenu
+from module.save_manager import SaveManager
+from module.menu import MainMenu
 import time
  
 class PythonAdventurerGame(QMainWindow):
