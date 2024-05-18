@@ -21,38 +21,48 @@ print("Hello, World!")
 
 **描述**：第二关介绍变量的定义和使用。
 
-**任务**：定义一个变量 `name`，并将其值设为你的名字，然后使用 `print` 函数打印出 "你好, name！"。
+**任务**：定义三个变量 `name`、`age` 和 `height`，分别将其值设为你的名字、年龄和身高（单位：米）。然后使用 `print` 函数分别打印出这些变量的值。
 
 **教学内容**：
 ```python
 name = 'Alice'
-print(f'你好, {name}！')
+age = 25
+height = 1.70
+print(f'姓名: {name}')
+print(f'年龄: {age}')
+print(f'身高: {height}')
 ```
 
 **代码检查**：
-- 确保代码中定义了变量 `name`。
-- 确保 `name` 的值是一个字符串。
+- 确保代码中定义了变量 `name`、`age` 和 `height`。
+- 确保 `name` 的值是一个字符串，`age` 的值是一个整数，`height` 的值是一个浮点数。
 - 确保使用 `print` 函数输出正确格式的字符串。
 
 #### 第三关：条件语句 (Level3)
 
 **描述**：第三关介绍条件语句的使用。
 
-**任务**：定义一个变量 `age`，并将其值设为一个整数，然后使用 `if` 语句检查 `age` 是否大于 18，如果是则打印 "成年人"，否则打印 "未成年人"。
+**任务**：定义两个变量 `age` 和 `height`，分别将其值设为一个整数和一个浮点数。然后使用 `if` 语句检查 `age` 是否大于 18，如果是则打印 "成年人"，否则打印 "未成年人"。同时，使用 `if` 语句检查 `height` 是否大于 1.70，如果是则打印 "你很高"，否则打印 "你不高"。
 
 **教学内容**：
 ```python
 age = 20
+height = 1.75
 if age > 18:
     print('成年人')
 else:
     print('未成年人')
+
+if height > 1.70:
+    print('你很高')
+else:
+    print('你不高')
 ```
 
 **代码检查**：
-- 确保代码中定义了变量 `age`。
-- 确保 `age` 的值是一个整数。
-- 确保使用 `if` 语句检查 `age` 的值并打印相应的信息。
+- 确保代码中定义了变量 `age` 和 `height`。
+- 确保 `age` 的值是一个整数，`height` 的值是一个浮点数。
+- 确保使用 `if` 语句检查 `age` 和 `height` 的值并打印相应的信息。
 
 #### 第四关：循环 (Level4)
 
@@ -74,42 +84,48 @@ for i in range(1, 11):
 
 **描述**：第五关介绍函数的定义和使用。
 
-**任务**：定义一个函数 `greet(name)`，该函数接收一个参数 `name`，并打印出 "你好, name！"。然后调用这个函数。
+**任务**：定义一个函数 `greet(name, age, height)`，该函数接收三个参数：名字、年龄和身高，并打印出 "你好, name！你今年 age 岁，身高 height 米。"。然后调用这个函数。
 
 **教学内容**：
 ```python
-def greet(name):
-    print(f'你好, {name}！')
+def greet(name, age, height):
+    print(f'你好, {name}！你今年 {age} 岁，身高 {height} 米。')
 
-greet('Alice')
+greet('Alice', 25, 1.70)
 ```
 
 **代码检查**：
 - 确保代码中定义了函数 `greet`。
-- 确保函数 `greet` 接收一个参数 `name`。
+- 确保函数 `greet` 接收三个参数 `name`、`age` 和 `height`。
 - 确保函数调用后打印出正确的字符串。
 
 #### Boss关1：综合应用 (Boss1)
 
 **描述**：Boss关1综合应用前面所有学到的知识。
 
-**任务**：定义一个函数 `adventure(name, age)`，该函数接收两个参数：名字和年龄。如果年龄大于 18，打印“欢迎，name，您是一名成年人。”，否则打印“欢迎，name，您是一名未成年人。”。接着，使用 `for` 循环打印从 1 到 `age` 之间的所有数字。
+**任务**：定义一个函数 `adventure(name, age, height)`，该函数接收三个参数：名字、年龄和身高。如果年龄大于 18，打印“欢迎，name，您是一名成年人。”，否则打印“欢迎，name，您是一名未成年人。”。接着，使用 `for` 循环打印从 1 到 `age` 之间的所有数字，并检查 `height` 是否大于 1.70，如果是则打印 "你很高"，否则打印 "你不高"。
 
 **教学内容**：
 ```python
-def adventure(name, age):
+def adventure(name, age, height):
     if age > 18:
         print(f'欢迎，{name}，您是一名成年人。')
     else:
         print(f'欢迎，{name}，您是一名未成年人。')
     for i in range(1, age + 1):
         print(i)
+    if height > 1.70:
+        print('你很高')
+    else:
+        print('你不高')
+
+adventure('Alice', 20, 1.75)
 ```
 
 **代码检查**：
 - 确保代码中定义了函数 `adventure`。
-- 确保函数 `adventure` 接收两个参数 `name` 和 `age`。
-- 确保使用 `if` 语句检查 `age` 的值并打印相应的信息。
+- 确保函数 `adventure` 接收三个参数 `name`、`age` 和 `height`。
+- 确保使用 `if` 语句检查 `age` 和 `height` 的值并打印相应的信息。
 - 确保使用 `for` 循环打印从 1 到 `age` 之间的所有数字。
 - 通过一组测试用例验证函数的正确性。
 

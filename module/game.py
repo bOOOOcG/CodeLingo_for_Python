@@ -2,7 +2,9 @@ from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, 
     QLineEdit, QMessageBox, QGridLayout, QPlainTextEdit
 )
-from levels import Level1, Level2, Level3, Level4, Level5, Boss1
+from levels import (Level1, Level2, Level3, Level4, Level5, Boss1,
+                    Level6, Level7, Level8, Level9, Level10, Boss2,
+                    )
 from module.config_manager import ConfigManager
 from module.save_manager import SaveManager
 from module.menu import MainMenu
@@ -14,14 +16,23 @@ class PythonAdventurerGame(QMainWindow):
         self.setWindowTitle("CodeLingo for Python")
 
         self.config_manager = ConfigManager()
-
         self.user_code = ""
-
         self.save_manager = SaveManager()
 
+        self.setup_main_menu()
+        self.setup_level_ui()
+        self.setup_level_selector()
+        self.setup_levels()
+        self.update_level_buttons()
+
+        self.current_level = 0
+        self.start_time = None
+
+    def setup_main_menu(self):
         self.main_menu = MainMenu(self)
         self.setCentralWidget(self.main_menu)
 
+    def setup_level_ui(self):
         self.level_widget = QWidget()
         self.level_layout = QVBoxLayout(self.level_widget)
 
@@ -59,13 +70,11 @@ class PythonAdventurerGame(QMainWindow):
         self.console_log.setVisible(self.config_manager.get_setting("show_console_log", False))
         self.level_layout.addWidget(self.console_log)
 
-        # 优化关卡加载部分
-        level_classes = [Level1, Level2, Level3, Level4, Level5, Boss1]
-        self.levels = [cls(self) for cls in level_classes]
-        
-        self.current_level = 0
-        self.start_time = None
+        self.back_to_menu_button = QPushButton("返回菜单")
+        self.back_to_menu_button.clicked.connect(self.show_main_menu)
+        self.level_layout.addWidget(self.back_to_menu_button)
 
+    def setup_level_selector(self):
         self.level_selector_widget = QWidget()
         self.level_selector_layout = QVBoxLayout(self.level_selector_widget)
         self.level_buttons_layout = QGridLayout()
@@ -82,13 +91,20 @@ class PythonAdventurerGame(QMainWindow):
         self.current_page = 0
         self.levels_per_page = 25
 
-        self.update_level_buttons()
+    def setup_levels(self):
+        level_classes = [Level1, Level2, Level3, Level4, Level5, Boss1,
+                         Level6, Level7, Level8, Level9, Level10, Boss2]
+        self.levels = [cls(self) for cls in level_classes]
+
+    def show_main_menu(self):
+        self.setCentralWidget(self.main_menu)
 
     def start_game(self):
         self.setCentralWidget(self.level_widget)
         self.select_level(self.current_level)
 
     def update_level_buttons(self):
+        # 清空当前布局中的所有按钮
         for i in reversed(range(self.level_buttons_layout.count())):
             widget = self.level_buttons_layout.itemAt(i).widget()
             if widget:
@@ -98,22 +114,33 @@ class PythonAdventurerGame(QMainWindow):
         start_index = self.current_page * self.levels_per_page
         end_index = min(start_index + self.levels_per_page, len(levels_to_display))
 
+        columns = 6  # 假设每行最多显示6个关卡按钮
+
         for i in range(start_index, end_index):
-            if i < 6:  # Display levels 1-5 and Boss1 in the first row
-                level_name = "Boss1" if i == 5 else f"关卡 {i + 1}"
-                button = QPushButton(level_name)
-                button.clicked.connect(self.create_select_level_func(i))
-                row, col = divmod(i, 6)  # Put them in the first row
-                self.level_buttons_layout.addWidget(button, row, col)
-            else:  # Display other levels in subsequent rows
-                level_name = f"关卡 {i + 1}"
-                button = QPushButton(level_name)
-                button.clicked.connect(self.create_select_level_func(i))
-                row, col = divmod(i - 6, 5)  # Put other levels in subsequent rows
-                self.level_buttons_layout.addWidget(button, row + 1, col)
+            # 设置按钮标签
+            level_name = f"关卡 {i + 1}"
+            if "Boss" in type(self.levels[i]).__name__:
+                level_name = type(self.levels[i]).__name__
+
+            button = QPushButton(level_name)
+            button.clicked.connect(self.create_select_level_func(i))
+
+            # 动态计算按钮的行和列
+            row, col = divmod(i - start_index, columns)
+            self.level_buttons_layout.addWidget(button, row, col)
 
         self.prev_button.setEnabled(self.current_page > 0)
         self.next_button.setEnabled(end_index < len(levels_to_display))
+
+    def prev_page(self):
+        if self.current_page > 0:
+            self.current_page -= 1
+            self.update_level_buttons()
+
+    def next_page(self):
+        if (self.current_page + 1) * self.levels_per_page < len(self.levels):
+            self.current_page += 1
+            self.update_level_buttons()
 
     def create_select_level_func(self, index):
         def select_level():
@@ -132,10 +159,16 @@ class PythonAdventurerGame(QMainWindow):
         self.test_button.hide()
         self.start_time = time.time()
         self.setCentralWidget(self.level_widget)
+        self.update_level_info()
+
+    def update_level_info(self):
+        level = self.levels[self.current_level]
+        self.label.setText(f"当前关卡: {self.current_level + 1}\n\n{level.description()}")
 
     def show_teaching(self):
         level = self.levels[self.current_level]
         teaching_message = level.teaching()
+        self.console_log.appendPlainText(teaching_message)
         QMessageBox.information(self, "教学", teaching_message)
 
     def run_code(self):
@@ -193,14 +226,6 @@ class PythonAdventurerGame(QMainWindow):
 
     def show_level_selector(self):
         self.setCentralWidget(self.level_selector_widget)
-
-    def prev_page(self):
-        self.current_page -= 1
-        self.update_level_buttons()
-
-    def next_page(self):
-        self.current_page += 1
-        self.update_level_buttons()
 
     def load_last_level(self):
         progress = self.save_manager.get_progress()

@@ -8,7 +8,9 @@ class Boss1(BaseLevel):
         return ("Boss关1：综合应用\n"
                 "任务：定义一个函数 adventure(name, age)，该函数接收两个参数：名字和年龄。\n"
                 "如果年龄大于18，打印“欢迎，name，您是一名成年人。”，否则打印“欢迎，name，您是一名未成年人。”。\n"
-                "接着，使用for循环打印从1到age之间的所有数字。")
+                "接着，使用 for 循环打印从 1 到 age 之间的所有数字。\n"
+                "此外，定义一个变量 height 并将其值设为一个浮点数，然后在函数中检查 height 是否大于 1.70，"
+                "如果是则打印 '你很高'，否则打印 '你不高'。")
 
     def check_code(self, code):
         try:
@@ -56,26 +58,30 @@ class Boss1(BaseLevel):
                 return False, f"测试运行错误: {e}\n调用堆栈:\n{tb}"
 
         printed_output = output.getvalue().strip().split('\n')
-        name, age = args
+        name, age, height = args
         expected_output = [f"欢迎，{name}，您是一名{'成年人' if age > 18 else '未成年人'}。"]
         expected_output.extend([str(i) for i in range(1, age + 1)])
+        if height > 1.70:
+            expected_output.append("你很高")
+        else:
+            expected_output.append("你不高")
 
         if printed_output != expected_output:
             if printed_output[0] != expected_output[0]:
                 reason = ("年龄判断错误。" if '成年人' in printed_output[0] else "未成年人判断错误。")
                 return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}。{reason}"
             else:
-                return False, f"测试运行失败，请检查for循环打印是否正确。当前输出: {printed_output}"
+                return False, f"测试运行失败，请检查 for 循环和 height 的判断是否正确。当前输出: {printed_output}"
 
         return True, "测试运行成功！"
 
     def run_all_tests(self, user_code):
         test_cases = [
-            ("Alice", 20),
-            ("Bob", 16),
-            ("Charlie", 18),
-            ("David", 5),
-            ("Eve", 21)
+            ("Alice", 20, 1.80),
+            ("Bob", 16, 1.65),
+            ("Charlie", 18, 1.75),
+            ("David", 5, 1.50),
+            ("Eve", 21, 1.85)
         ]
 
         local_namespace = {}
@@ -90,8 +96,8 @@ class Boss1(BaseLevel):
 
         adventure_func = local_namespace['adventure']
 
-        for name, age in test_cases:
-            success, message = self.run_test(adventure_func, name, age)
+        for name, age, height in test_cases:
+            success, message = self.run_test(adventure_func, name, age, height)
             if not success:
                 return False, message
 
@@ -100,10 +106,14 @@ class Boss1(BaseLevel):
     def teaching(self):
         return ("在这个关卡中，你需要综合运用前面所学的所有知识。你需要定义一个函数，并在函数内使用条件语句和循环。\n"
                 "示例：\n"
-                "def adventure(name, age):\n"
+                "def adventure(name, age, height):\n"
                 "    if age > 18:\n"
                 "        print(f'欢迎，{name}，您是一名成年人。')\n"
                 "    else:\n"
                 "        print(f'欢迎，{name}，您是一名未成年人。')\n"
                 "    for i in range(1, age + 1):\n"
-                "        print(i)\n")
+                "        print(i)\n"
+                "    if height > 1.70:\n"
+                "        print('你很高')\n"
+                "    else:\n"
+                "        print('你不高')\n")
