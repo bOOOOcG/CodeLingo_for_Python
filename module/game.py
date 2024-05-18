@@ -151,6 +151,7 @@ class PythonAdventurerGame(QMainWindow):
     def select_level(self, index):
         self.current_level = index
         level = self.levels[self.current_level]
+        self.setup_level_ui()  # 重新创建 level_widget 和其内容
         self.label.setText(level.description())
         self.text_edit.clear()
         self.output_label.clear()
@@ -161,7 +162,7 @@ class PythonAdventurerGame(QMainWindow):
         self.start_time = time.time()
         self.setCentralWidget(self.level_widget)
         self.update_level_info()
-
+    
     def update_level_info(self):
         level = self.levels[self.current_level]
         self.label.setText(f"当前关卡: {self.current_level + 1}\n\n{level.description()}")
@@ -226,6 +227,20 @@ class PythonAdventurerGame(QMainWindow):
         self.output_label.setText("")
 
     def show_level_selector(self):
+        self.level_selector_widget = QWidget()  # 重新创建 level_selector_widget 对象
+        self.level_selector_layout = QVBoxLayout(self.level_selector_widget)
+        self.level_buttons_layout = QGridLayout()
+        self.level_selector_layout.addLayout(self.level_buttons_layout)
+
+        self.prev_button = QPushButton("上一页")
+        self.prev_button.clicked.connect(self.prev_page)
+        self.level_selector_layout.addWidget(self.prev_button)
+
+        self.next_button = QPushButton("下一页")
+        self.next_button.clicked.connect(self.next_page)
+        self.level_selector_layout.addWidget(self.next_button)
+
+        self.update_level_buttons()
         self.setCentralWidget(self.level_selector_widget)
 
     def load_last_level(self):
