@@ -9,7 +9,7 @@ from module.config_manager import ConfigManager
 from save_manager import SaveManager
 from menu import MainMenu
 import time
-
+ 
 class PythonAdventurerGame(QMainWindow):
     def __init__(self):
         super().__init__()
