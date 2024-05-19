@@ -7,6 +7,9 @@ from PySide6.QtGui import QFont, QSyntaxHighlighter, QTextCharFormat, QBrush, QC
 from PySide6.QtCore import Qt, QPoint, QRegularExpression, QSize
 from levels import (Level1, Level2, Level3, Level4, Level5, Boss1,
                     Level6, Level7, Level8, Level9, Level10, Boss2,
+                    Level11, Level12, Level13, Level14, Level15, Boss3,
+                    Level16, Level17, Level18, Level19, Level20, Boss4,
+                    TitanOne,
                     )
 from module.config_manager import ConfigManager
 from module.style_manager import StyleManager
@@ -93,7 +96,7 @@ class CodeTextEdit(QPlainTextEdit):
         extra_selections = []
         if not self.isReadOnly():
             selection = QTextEdit.ExtraSelection()
-            line_color = QColor(41, 53, 66)  # 比较暗的蓝灰色
+            line_color = QColor(31, 43, 56)  # 比较暗的蓝灰色
             selection.format.setBackground(line_color)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
@@ -217,6 +220,10 @@ class PythonAdventurerGame(QMainWindow):
         self.hint_button.clicked.connect(self.show_hint)
         answer_hint_layout.addWidget(self.hint_button)
 
+        self.fill_answer_button = QPushButton("填充答案")
+        self.fill_answer_button.clicked.connect(self.fill_answer)
+        answer_hint_layout.addWidget(self.fill_answer_button)
+
         answer_hint_layout.addStretch(1)  # 右侧弹簧
         self.level_layout.addLayout(answer_hint_layout)
 
@@ -245,9 +252,21 @@ class PythonAdventurerGame(QMainWindow):
 
         self.level_layout.addStretch(1)  # 垂直弹簧
 
+        # 创建返回菜单按钮的水平布局，并添加伸缩弹簧
+        back_menu_layout = QHBoxLayout()
+        back_menu_layout.addStretch(1)  # 左侧弹簧
+
         self.back_to_menu_button = QPushButton("返回菜单")
         self.back_to_menu_button.clicked.connect(self.show_main_menu)
-        self.level_layout.addWidget(self.back_to_menu_button)
+        back_menu_layout.addWidget(self.back_to_menu_button)
+
+        back_menu_layout.addStretch(1)  # 右侧弹簧
+        self.level_layout.addLayout(back_menu_layout)
+
+    def fill_answer(self):
+        level = self.levels[self.current_level]
+        answer = level.answer()
+        self.code_text_edit.setPlainText(answer)
 
     def setup_level_selector(self):
         self.level_selector_widget = QWidget()
@@ -279,8 +298,13 @@ class PythonAdventurerGame(QMainWindow):
         self.levels_per_page = 25
 
     def setup_levels(self):
-        level_classes = [Level1, Level2, Level3, Level4, Level5, Boss1,
-                         Level6, Level7, Level8, Level9, Level10, Boss2]
+        level_classes = [
+            Level1, Level2, Level3, Level4, Level5, Boss1,
+            Level6, Level7, Level8, Level9, Level10, Boss2,
+            Level11, Level12, Level13, Level14, Level15, Boss3,
+            Level16, Level17, Level18, Level19, Level20, Boss4,
+            TitanOne,
+        ]
         self.levels = [cls(self) for cls in level_classes]
 
     def show_main_menu(self):
@@ -301,32 +325,66 @@ class PythonAdventurerGame(QMainWindow):
             widget = self.level_buttons_layout.itemAt(i).widget()
             if widget:
                 widget.setParent(None)
-    
+
         levels_to_display = self.levels
         start_index = self.current_page * self.levels_per_page
         end_index = min(start_index + self.levels_per_page, len(levels_to_display))
-    
+
         columns = 6  # 假设每行最多显示6个关卡按钮
-    
-        for i in range(start_index, end_index):
+        titan_one_inserted = False  # 用于跟踪 TITAN_ONE 是否已插入
+        titan_one_button = None  # 用于存储 TITAN_ONE 按钮
+
+        for display_index in range(start_index, end_index):
+            # 计算实际索引
+            actual_index = display_index
+
             # 设置按钮标签
-            level_name = f"关卡 {i + 1}"
-            if "Boss" in type(self.levels[i]).__name__:
-                level_name = type(self.levels[i]).__name__
-    
+            level_instance = self.levels[actual_index]
+            level_type_name = type(level_instance).__name__
+
+            if "Boss" in level_type_name:
+                level_name = level_type_name
+            elif "TitanOne" in level_type_name:
+                level_name = "TITAN_ONE"
+            else:
+                level_name = level_type_name
+
             button = QPushButton(level_name)
-            button.clicked.connect(self.create_select_level_func(i))
-    
+            button.clicked.connect(self.create_select_level_func(level_type_name))
+
             # 动态计算按钮的行和列
-            row, col = divmod(i - start_index, columns)
-            self.level_buttons_layout.addWidget(button, row, col)
-    
+            row, col = divmod(display_index - start_index, columns)
+
+            # 插入 TITAN_ONE 按钮到第五行中间位置，占两个位置
+            if "TitanOne" in level_type_name:
+                titan_one_button = button
+                titan_one_row = 4  # 设定为第五行
+                titan_one_col = 2  # 设定为第三列开始
+                titan_one_inserted = True
+            else:
+                # 如果 TITAN_ONE 按钮已经插入，则后面的按钮位置需要调整
+                if titan_one_inserted and row == 4 and col >= 2:
+                    col += 1
+                self.level_buttons_layout.addWidget(button, row, col)
+
+        # 添加 TITAN_ONE 按钮到特定位置，跨越两个列
+        if titan_one_inserted and titan_one_button:
+            self.level_buttons_layout.addWidget(titan_one_button, titan_one_row, titan_one_col, 1, 2)
+
         # 添加伸缩空间
         self.level_selector_layout.addStretch()
-    
+
         self.prev_button.setEnabled(self.current_page > 0)
         self.next_button.setEnabled(end_index < len(levels_to_display))
-    
+
+    def create_select_level_func(self, level_type_name):
+        def select_level():
+            for index, level in enumerate(self.levels):
+                if type(level).__name__ == level_type_name:
+                    self.select_level(index)
+                    break
+        return select_level
+
     def prev_page(self):
         if self.current_page > 0:
             self.current_page -= 1
@@ -348,11 +406,6 @@ class PythonAdventurerGame(QMainWindow):
             self.select_level(next_index)
         else:
             self.end_game()
-
-    def create_select_level_func(self, index):
-        def select_level():
-            self.select_level(index)
-        return select_level
 
     def select_level(self, index):
         self.current_level = index

@@ -47,30 +47,31 @@ class Level10(BaseLevel):
             except Exception as e:
                 return False, f"测试运行错误: {e}"
 
-        printed_output = output.getvalue().strip().split('\n')
+        printed_output = [line for line in output.getvalue().split('\n') if line]
         filename = args[0]
         with open(filename, 'r') as file:
             content = file.read()
             file.seek(0)
-            lines = file.readlines()
+            lines = [line.strip() for line in file.readlines()]
 
-        expected_output = [content.strip()]
-        expected_output.extend([str(len(line.strip())) for line in lines])
+        expected_output = content.split('\n')
+        expected_output.extend([str(len(line)) for line in lines])
+        expected_output = [line for line in expected_output if line]
 
         if printed_output != expected_output:
-            return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}"
+            return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}, 预期输出: {expected_output}"
 
         return True, f"测试运行成功！当前输出: {printed_output}"
 
     def run_all_tests(self, user_code):
-        # 创建测试文件
-        with open('example1.txt', 'w') as file:
+        # 创建带有 levelX_ 前缀的测试文件
+        with open('level10_example1.txt', 'w') as file:
             file.write("Hello world\nPython programming")
 
-        with open('example2.txt', 'w') as file:
+        with open('level10_example2.txt', 'w') as file:
             file.write("Learning Python\nis fun")
 
-        test_cases = ['example1.txt', 'example2.txt']
+        test_cases = ['level10_example1.txt', 'level10_example2.txt']
 
         local_namespace = {}
         output = io.StringIO()

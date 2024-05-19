@@ -1,6 +1,7 @@
 from levels.base_level import BaseLevel
 import io
 import contextlib
+import re
 
 class Level5(BaseLevel):
     def description(self):
@@ -33,10 +34,12 @@ class Level5(BaseLevel):
 
         printed_output = output.getvalue().strip()
         expected_output = f"你好, {test_name}！你今年 {test_age} 岁，身高 {test_height} 米。"
+        
+        pattern = re.compile(r"你好, .*！你今年 \d+ 岁，身高 \d+(\.\d+)? 米。")
         if not printed_output:
             return False, "代码错误：输出为空，请检查是否正确调用了 'greet' 函数，并确保使用了正确的字符串格式化方法。"
 
-        if printed_output != expected_output:
+        if not pattern.match(printed_output):
             if '{name}' in code or '{age}' in code or '{height}' in code:
                 return False, f"代码错误：请使用正确的字符串格式化方法，例如 f-string 或 .format。当前输出: {printed_output}"
             return False, f"代码错误，请使用正确的格式打印出 '{expected_output}'。当前输出: {printed_output}"

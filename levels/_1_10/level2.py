@@ -61,9 +61,9 @@ class Level2(BaseLevel):
                 "在这个任务中，你需要定义变量 `name`、`age` 和 `height`，并分别打印它们的值。")
 
     def answer(self):
-        return ("name = '你的名字'\n"
-                "age = 你的年龄\n"
-                "height = 你的身高\n"
+        return ("name = 'yezai'\n"
+                "age = 114514\n"
+                "height = 8844.43\n"
                 "print(f'你好, {name}')\n"
                 "print(age)\n"
                 "print(height)")

@@ -59,26 +59,26 @@ class Boss2(BaseLevel):
             info['city']
         ]
         expected_output.extend([person['name'] for person in data])
-        expected_output.append(content)
+        expected_output.extend(content.split('\n'))
 
         if printed_output != expected_output:
-            return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}"
+            return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}, 预期输出: {expected_output}"
 
         return True, f"测试运行成功！当前输出: {printed_output}"
 
     def run_all_tests(self, user_code):
-        # 创建测试文件
-        with open('example1.txt', 'w') as file:
+        # 创建带有 boss2_ 前缀的测试文件
+        with open('boss2_example1.txt', 'w') as file:
             file.write("Hello world\nPython programming")
 
-        with open('example2.txt', 'w') as file:
+        with open('boss2_example2.txt', 'w') as file:
             file.write("Learning Python\nis fun")
 
         test_cases = [
             ('Alice', 20, {'name': 'Alice', 'age': 20, 'city': 'New York'},
-             [{'name': 'Bob', 'age': 30, 'city': 'Los Angeles'}, {'name': 'Charlie', 'age': 35, 'city': 'Chicago'}], 'example1.txt'),
+             [{'name': 'Bob', 'age': 30, 'city': 'Los Angeles'}, {'name': 'Charlie', 'age': 35, 'city': 'Chicago'}], 'boss2_example1.txt'),
             ('David', 17, {'name': 'David', 'age': 17, 'city': 'Houston'},
-             [{'name': 'Eve', 'age': 25, 'city': 'San Francisco'}, {'name': 'Frank', 'age': 28, 'city': 'Seattle'}], 'example2.txt')
+             [{'name': 'Eve', 'age': 25, 'city': 'San Francisco'}, {'name': 'Frank', 'age': 28, 'city': 'Seattle'}], 'boss2_example2.txt')
         ]
 
         local_namespace = {}

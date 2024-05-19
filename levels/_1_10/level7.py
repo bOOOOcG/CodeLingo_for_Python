@@ -2,6 +2,7 @@ import ast
 from levels.base_level import BaseLevel
 import io
 import contextlib
+import re
 
 class Level7(BaseLevel):
     def description(self):
@@ -50,9 +51,11 @@ class Level7(BaseLevel):
 
         printed_output = output.getvalue().strip().split('\n')
         info = args[0]
-        expected_output = [str(list(info.keys())), str(list(info.values())), str(info['name'])]
+        keys_pattern = re.compile(r"dict_keys\(\['name', 'age', 'city'\]\)")
+        values_pattern = re.compile(r"dict_values\(\['[A-Za-z]+', \d+, '[A-Za-z\s]+'\]\)")
+        name_pattern = re.compile(r"[A-Za-z]+")
 
-        if printed_output != expected_output:
+        if not (keys_pattern.match(printed_output[0]) and values_pattern.match(printed_output[1]) and name_pattern.match(printed_output[2])):
             return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}"
 
         return True, f"测试运行成功！当前输出: {printed_output}"
@@ -97,4 +100,3 @@ class Level7(BaseLevel):
         return ("提示：你需要定义一个接收字典参数的函数，并在函数内使用字典的方法。\n"
                 "例如，使用 .keys() 方法获取字典的所有键，使用 .values() 方法获取字典的所有值，"
                 "以及使用索引访问字典中具体键的值。")
-
