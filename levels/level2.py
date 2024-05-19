@@ -1,11 +1,13 @@
+import ast
 from levels.base_level import BaseLevel
 import io
 import contextlib
+import re
 
 class Level2(BaseLevel):
     def description(self):
         return ("第二关：变量和数据类型\n"
-                "任务：定义一个变量 `name` 并将其值设为你的名字，然后使用 `print` 函数打印出 '你好, name！'。\n"
+                "任务：定义一个变量 `name` 并将其值设为你的名字，然后使用 `print` 函数打印出 '你好, name'。\n"
                 "此外，定义一个变量 `age` 并将其值设为你的年龄，定义一个变量 `height` 并将其值设为你的身高（单位：米）。\n"
                 "使用 `print` 函数分别打印出这些变量的值。")
 
@@ -37,15 +39,15 @@ class Level2(BaseLevel):
             return False, "代码错误：变量 'height' 应该是浮点数类型。"
 
         # 检查输出
-        printed_output = output.getvalue().strip().split('\n')
-        expected_output = [
-            f"你好, {local_namespace['name']}！",
-            str(local_namespace['age']),
-            str(local_namespace['height'])
-        ]
-        
-        if all(line in printed_output for line in expected_output):
-            return True, "代码正确！"
+        printed_output = output.getvalue().strip().replace(' ', '')
+        expected_name = local_namespace['name'].replace(' ', '')
+        expected_age = str(local_namespace['age'])
+        expected_height = str(local_namespace['height'])
+
+        if (expected_name in printed_output and
+            expected_age in printed_output and
+            expected_height in printed_output):
+            return True, f"代码正确！ 当前输出: {output.getvalue().strip()}"
         else:
             return False, f"代码错误：输出应包含 'name'、'age' 和 'height'。当前输出: {output.getvalue().strip()}"
 
@@ -62,14 +64,14 @@ class Level2(BaseLevel):
         return ("name = '你的名字'\n"
                 "age = 你的年龄\n"
                 "height = 你的身高\n"
-                "print(f'你好, {name}！')\n"
+                "print(f'你好, {name}')\n"
                 "print(age)\n"
                 "print(height)")
 
     def hint(self):
         return ("提示：首先定义变量 name、age 和 height。\n"
                 "然后使用 print 函数打印这些变量的值。\n"
-                "例如：print(f'你好, {name}！') 用于打印变量 name 的值。")
+                "例如：print(f'你好, {name}') 用于打印变量 name 的值。")
 
     def run_all_tests(self, user_code):
         # 运行所有测试用例的逻辑

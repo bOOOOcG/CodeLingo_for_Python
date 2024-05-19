@@ -187,41 +187,63 @@ class PythonAdventurerGame(QMainWindow):
         self.code_text_edit.setFixedHeight(400)  # 设置默认高度为20行
         self.level_layout.addWidget(self.code_text_edit)
 
+        self.output_label = QLabel("")
+        self.level_layout.addWidget(self.output_label)
+
+        # 创建运行代码和教学按钮所在的水平布局
+        run_teach_layout = QHBoxLayout()
+        run_teach_layout.addStretch(1)  # 左侧弹簧
+
         self.run_button = QPushButton("运行代码")
         self.run_button.clicked.connect(self.run_code)
-        self.level_layout.addWidget(self.run_button)
+        run_teach_layout.addWidget(self.run_button)
 
         self.teaching_button = QPushButton("教学")
         self.teaching_button.clicked.connect(self.show_teaching)
-        self.level_layout.addWidget(self.teaching_button)
+        run_teach_layout.addWidget(self.teaching_button)
+
+        run_teach_layout.addStretch(1)  # 右侧弹簧
+        self.level_layout.addLayout(run_teach_layout)
+
+        # 创建显示答案和显示提示按钮所在的水平布局
+        answer_hint_layout = QHBoxLayout()
+        answer_hint_layout.addStretch(1)  # 左侧弹簧
 
         self.answer_button = QPushButton("显示答案")
         self.answer_button.clicked.connect(self.show_answer)
-        self.level_layout.addWidget(self.answer_button)
+        answer_hint_layout.addWidget(self.answer_button)
 
         self.hint_button = QPushButton("显示提示")
         self.hint_button.clicked.connect(self.show_hint)
-        self.level_layout.addWidget(self.hint_button)
+        answer_hint_layout.addWidget(self.hint_button)
 
-        self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("输入名字")
-        self.level_layout.addWidget(self.name_input)
-
-        self.age_input = QLineEdit()
-        self.age_input.setPlaceholderText("输入年龄")
-        self.level_layout.addWidget(self.age_input)
-
-        self.test_button = QPushButton("运行测试")
-        self.test_button.clicked.connect(self.run_test)
-        self.level_layout.addWidget(self.test_button)
-
-        self.output_label = QLabel("")
-        self.level_layout.addWidget(self.output_label)
+        answer_hint_layout.addStretch(1)  # 右侧弹簧
+        self.level_layout.addLayout(answer_hint_layout)
 
         self.console_log = QPlainTextEdit()
         self.console_log.setReadOnly(True)
         self.console_log.setVisible(self.config_manager.get_setting("General.show_console_log", False))
         self.level_layout.addWidget(self.console_log)
+
+        self.level_layout.addStretch(1)  # 垂直弹簧
+
+        # 创建上一关和下一关按钮所在的水平布局
+        nav_buttons_layout = QHBoxLayout()
+        nav_buttons_layout.addStretch(1)  # 左侧弹簧
+
+        self.prev_level_button = QPushButton("上一关")
+        self.prev_level_button.clicked.connect(self.prev_level)
+        nav_buttons_layout.addWidget(self.prev_level_button)
+
+        self.next_level_button = QPushButton("下一关")
+        self.next_level_button.setEnabled(False)  # 初始化为禁用状态
+        self.next_level_button.clicked.connect(self.next_level)
+        nav_buttons_layout.addWidget(self.next_level_button)
+
+        nav_buttons_layout.addStretch(1)  # 右侧弹簧
+        self.level_layout.addLayout(nav_buttons_layout)
+
+        self.level_layout.addStretch(1)  # 垂直弹簧
 
         self.back_to_menu_button = QPushButton("返回菜单")
         self.back_to_menu_button.clicked.connect(self.show_main_menu)
@@ -315,6 +337,18 @@ class PythonAdventurerGame(QMainWindow):
             self.current_page += 1
             self.update_level_buttons()
 
+    def prev_level(self):
+        prev_index = self.current_level - 1
+        if prev_index >= 0:
+            self.select_level(prev_index)
+
+    def next_level(self):
+        next_index = self.current_level + 1
+        if next_index < len(self.levels):
+            self.select_level(next_index)
+        else:
+            self.end_game()
+
     def create_select_level_func(self, index):
         def select_level():
             self.select_level(index)
@@ -335,9 +369,6 @@ class PythonAdventurerGame(QMainWindow):
         self.code_text_edit.clear()
         self.output_label.clear()
         self.console_log.clear()
-        self.name_input.hide()
-        self.age_input.hide()
-        self.test_button.hide()
         self.start_time = time.time()
     
         # 将 level_widget 添加到 content_widget 中
@@ -359,7 +390,7 @@ class PythonAdventurerGame(QMainWindow):
         answer_message = level.answer()
         self.console_log.appendPlainText(answer_message)
         QMessageBox.information(self, "答案", answer_message)
-    
+
     def show_hint(self):
         level = self.levels[self.current_level]
         hint_message = level.hint()
@@ -374,17 +405,16 @@ class PythonAdventurerGame(QMainWindow):
         if success:
             # 运行所有测试用例
             success, message = level.run_all_tests(self.user_code)
+            self.output_label.setText(message)
+            self.console_log.appendPlainText(message)
             if success:
-                self.output_label.setText(message)
-                self.console_log.appendPlainText(f"输出：{message}")
+                self.next_level_button.setEnabled(True)  # 成功后解禁“下一关”按钮
                 QMessageBox.information(self, "成功", "恭喜你完成这一关！")
                 end_time = time.time()
                 time_taken = end_time - self.start_time
                 self.save_manager.save_progress(f"关卡 {self.current_level + 1}", time_taken)
-                self.next_level()
             else:
-                self.output_label.setText(message)
-                self.console_log.appendPlainText(message)
+                QMessageBox.warning(self, "错误", message)
         else:
             self.output_label.setText(message)
             self.console_log.appendPlainText(message)
@@ -392,7 +422,7 @@ class PythonAdventurerGame(QMainWindow):
     def run_test(self):
         test_input = self.name_input.text()
         if not test_input:
-            QMessageBox.warning(self, "输入错误", "请输入有效的测试数据。")
+            QMessageBox.warning(self, "测试错误", "测试数据错误。")
             return
         level = self.levels[self.current_level]
         success, message = level.run_test(test_input, self.user_code)
@@ -401,13 +431,6 @@ class PythonAdventurerGame(QMainWindow):
             QMessageBox.information(self, "成功", message)
         else:
             QMessageBox.warning(self, "失败", message)
-
-    def next_level(self):
-        next_index = self.current_level + 1
-        if next_index < len(self.levels):
-            self.select_level(next_index)
-        else:
-            self.end_game()
 
     def end_game(self):
         self.label.setText("恭喜你完成所有任务！")

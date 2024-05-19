@@ -60,7 +60,7 @@ class Level10(BaseLevel):
         if printed_output != expected_output:
             return False, f"测试运行失败，请检查输出格式。当前输出: {printed_output}"
 
-        return True, "测试运行成功！"
+        return True, f"测试运行成功！当前输出: {printed_output}"
 
     def run_all_tests(self, user_code):
         # 创建测试文件

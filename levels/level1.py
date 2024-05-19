@@ -2,7 +2,7 @@ from levels.base_level import BaseLevel
 
 class Level1(BaseLevel):
     def description(self):
-        return "第一关：打印输出\n任务：使用 print 函数打印出“点燃火把！”"
+        return "第一关：打印输出\n任务：使用 print 函数打印出“点燃火把”"
 
     def check_code(self, code):
         if "print" in code and '点燃火把' in code:

@@ -18,7 +18,7 @@ class Level4(BaseLevel):
         printed_output = output.getvalue().strip().split()
         expected_output = [str(i) for i in range(1, 11)]
         if printed_output == expected_output:
-            return True, "成功打印出 1 到 10 的所有数字！"
+            return True, f"成功打印出 1 到 10 的所有数字！ 当前输出: {printed_output}"
         else:
             return False, f"代码错误，请使用 for 循环打印从 1 到 10 的所有数字。当前输出: {printed_output}"
 

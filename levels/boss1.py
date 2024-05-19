@@ -73,7 +73,7 @@ class Boss1(BaseLevel):
             else:
                 return False, f"测试运行失败，请检查 for 循环和 height 的判断是否正确。当前输出: {printed_output}"
 
-        return True, "测试运行成功！"
+        return True, f"测试运行成功！当前输出: {printed_output}"
 
     def run_all_tests(self, user_code):
         test_cases = [

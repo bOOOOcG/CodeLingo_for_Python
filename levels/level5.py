@@ -38,10 +38,10 @@ class Level5(BaseLevel):
 
         if printed_output != expected_output:
             if '{name}' in code or '{age}' in code or '{height}' in code:
-                return False, "代码错误：请使用正确的字符串格式化方法，例如 f-string 或 .format。当前输出: {printed_output}"
+                return False, f"代码错误：请使用正确的字符串格式化方法，例如 f-string 或 .format。当前输出: {printed_output}"
             return False, f"代码错误，请使用正确的格式打印出 '{expected_output}'。当前输出: {printed_output}"
 
-        return True, "代码正确！"
+        return True, f"代码正确！ 当前输出: {printed_output}"
 
     def teaching(self):
         return ("函数用于将一段代码封装成一个可重复使用的代码块。使用 def 关键字来定义函数。例如：\n"

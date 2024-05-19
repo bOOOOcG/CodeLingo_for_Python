@@ -44,7 +44,7 @@ class Level3(BaseLevel):
         if printed_output != expected_output:
             return False, f"代码错误，请正确使用 if 语句检查 age 和 height 的值并打印正确的结果。当前输出: {printed_output}"
 
-        return True, "代码正确！"
+        return True, f"代码正确！ 当前输出: {printed_output}"
 
     def teaching(self):
         return ("条件语句用于根据条件的真或假来执行不同的代码块。使用 if 关键字来编写条件语句。例如：\n"
